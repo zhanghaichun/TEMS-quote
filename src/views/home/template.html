@@ -1,0 +1,10 @@
+<div class="root">
+    <div>
+      <ul>
+      <li v-for="(c, index) in categoryList">
+        {{ c.name }}
+      </li>
+      </ul>
+    </div>
+  <FTabbar :tabbarIndex="tabbarIndex"></FTabbar>
+</div>

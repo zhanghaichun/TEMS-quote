@@ -1,0 +1,239 @@
+<template>
+  <!-- @wheel="_onWheel" -->
+  <div class="swiper" ref="swiper" 
+    :class="[direction, {'dragging': dragging}]">
+      <div class="swiper-wrap"
+        ref="swiperWrap"
+        :style="{'transform' : 'translate3d(' + translateX + 'px,' + translateY + 'px, 0)','transition-duration': transitionDuration + 'ms'
+        }">
+        <slot></slot>
+      </div>
+      <div class="swiper-pagination" v-if="paginationVisible">
+          <span class="swiper-pagination-bullet" :class="{'active': index+1===currentPage}"
+            v-for="(slide,index) in slideEls"
+            @click="setPage(index+1)"></span>
+      </div>
+  </div>
+</template>
+<style lang="less" src="./vue-swiper.less"></style>
+<script>
+  const VERTICAL = 'vertical'
+  const HORIZONTAL = 'horizontal'
+  export default {
+    props: {
+      direction: {
+        type: String,
+        default: VERTICAL
+        // validator: (value) => [VERTICAL, HORIZONTAL].indexOf(value) > -1
+      },
+      mousewheelControl: {
+        type: Boolean,
+        default: true
+      },
+      performanceMode: {
+        type: Boolean,
+        default: false
+      },
+      paginationVisible: {
+        type: Boolean,
+        default: false
+      },
+      paginationClickable: {
+        type: Boolean,
+        default: false
+      },
+      loop: {
+        type: Boolean,
+        default: false
+      },
+      speed: {
+        type: Number,
+        default: 200
+      }
+    },
+    data () {
+      return {
+        currentPage: 1,
+        lastPage: 1,
+        translateX: 0,
+        translateY: 0,
+        startTranslate: 0,
+        delta: 0,
+        dragging: false,
+        startPos: null,
+        transitioning: false,
+        slideEls: [],
+        translateOffset: 0,
+        transitionDuration: 0,
+        swiperEl: ''
+      }
+    },
+    mounted () {
+      setTimeout(() => {
+        this.init()
+      }, 20)
+    },
+    methods: {
+      next () {
+        let page = this.currentPage
+        if (page < this.slideEls.length || this.loop) {
+          this.setPage(page + 1)
+        } else {
+          this._revert()
+        }
+      },
+      prev () {
+        let page = this.currentPage
+        if (page > 1 || this.loop) {
+          this.setPage(page - 1)
+        } else {
+          this._revert()
+        }
+      },
+      setPage (page, noAnimation) {
+        let self = this
+        this.lastPage = this.currentPage
+        if (page === 0) {
+          this.currentPage = this.slideEls.length
+        } else if (page === this.slideEls.length + 1) {
+          this.currentPage = 1
+        } else {
+          this.currentPage = page
+        }
+        if (this.loop) {
+          if (this.delta === 0) {
+            this._setTranslate(self._getTranslateOfPage(this.lastPage))
+          }
+          setTimeout(() => {
+            this._setTranslate(self._getTranslateOfPage(page))
+            if (noAnimation) return
+            this._onTransitionStart()
+          }, 0)
+        } else {
+          this._setTranslate(this._getTranslateOfPage(page))
+          if (noAnimation) return
+          this._onTransitionStart()
+        }
+      },
+      _onTouchStart (e) {
+        this.startPos = this._getTouchPos(e)
+        this.delta = 0
+        this.startTranslate = this._getTranslateOfPage(this.currentPage)
+        this.startTime = new Date().getTime()
+        this.dragging = true
+        this.transitionDuration = 0
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      _onTouchMove (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.delta = this._getTouchPos(e) - this.startPos
+        if (!this.performanceMode) {
+          this._setTranslate(this.startTranslate + this.delta)
+          this.$emit('slider-move', this._getTranslate())
+        }
+      },
+      _onTouchEnd (e) {
+        this.dragging = false
+        this.transitionDuration = this.speed
+        let isQuickAction = new Date().getTime() - this.startTime < 1000
+        if (this.delta < -100 || (isQuickAction && this.delta < -15)) {
+          this.next()
+        } else if (this.delta > 100 || (isQuickAction && this.delta > 15)) {
+          this.prev()
+        } else {
+          this._revert()
+        }
+      },
+      _onWheel (e) {
+        if (this.mousewheelControl) {
+          if (!this.transitioning) {
+            if (e.deltaY > 0) {
+              this.next()
+            } else {
+              this.prev()
+            }
+          }
+          if (this._isPageChanged()) e.preventDefault()
+        }
+      },
+      _revert () {
+        this.setPage(this.currentPage)
+      },
+      // 获取 手指 位置
+      _getTouchPos (e) {
+        let key = this.isHorizontal ? 'pageX' : 'pageY'
+        return e.changedTouches ? e.changedTouches[0][key] : e[key]
+      },
+      _onTransitionStart () {
+        this.transitioning = true
+        this.transitionDuration = this.speed
+        if (this._isPageChanged()) {
+          this.$emit('slide-change-start', this.currentPage)
+        } else {
+          this.$emit('slide-revert-start', this.currentPage)
+        }
+      },
+      _onTransitionEnd () {
+        this.transitioning = false
+        this.transitionDuration = 0
+        this.delta = 0
+        if (this._isPageChanged()) {
+          this.$emit('slide-change-end', this.currentPage)
+        } else {
+          this.$emit('slide-revert-end', this.currentPage)
+        }
+      },
+      _isPageChanged () {
+        return this.lastPage !== this.currentPage
+      },
+      _setTranslate (value) {
+        let translateName = this.isHorizontal ? 'translateX' : 'translateY'
+        this[translateName] = value
+      },
+      _getTranslate () {
+        let translateName = this.isHorizontal ? 'translateX' : 'translateY'
+        return this[translateName]
+      },
+
+      _getTranslateOfPage (page) {
+        if (page === 0) return 0
+        let propName = this.isHorizontal ? 'clientWidth' : 'clientHeight'
+        return -[].reduce.call(this.slideEls, function (total, el, i) {
+          return i > page - 2 ? total : total + el[propName]
+        }, 0) + this.translateOffset
+      },
+      // _createLoop () {
+      //   let propName = this.isHorizontal ? 'clientWidth' : 'clientHeight'
+      //   let swiperWrapEl = this.$refs.swiperWrap
+      //   let duplicateFirstChild = swiperWrapEl.firstElementChild.cloneNode(true)
+      //   let duplicateLastChild = swiperWrapEl.lastElementChild.cloneNode(true)
+      //   swiperWrapEl.insertBefore(duplicateLastChild, swiperWrapEl.firstElementChild)
+      //   swiperWrapEl.appendChild(duplicateFirstChild)
+      //   this.translateOffset = -duplicateLastChild[propName]
+      // },
+      bindEvents () {
+        this.swiperEl = this.$refs.swiper
+        this.swiperEl.addEventListener('touchstart', this._onTouchStart)
+        this.swiperEl.addEventListener('touchmove', this._onTouchMove)
+        this.swiperEl.addEventListener('touchend', this._onTouchEnd)
+      },
+      init () {
+        console.log(this.$refs.swiperWrap.children)
+        if (!this.paginationVisible) {
+          this.slideEls = [].map.call(this.$refs.swiperWrap.children, el => el)
+        }
+        this.bindEvents()
+      }
+    },
+    computed: {
+      isHorizontal () {
+        return this.direction === HORIZONTAL
+      },
+      isVertical () {
+        return this.direction === VERTICAL
+      }
+    }
+  }
+</script>
