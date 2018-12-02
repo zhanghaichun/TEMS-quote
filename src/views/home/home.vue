@@ -30,40 +30,40 @@
       },
       getData () {
         let self = this
-        // HomeServices.getPostComments({
-        //   userId: 2,
-        //   title: 'Good Answer',
-        //   body: 'good one'
-        // })
-        // .then(res => {
-        //   // self.comment = Object.assign({}, self.comment, res[0])
-        //   self.comment = { ...res }
-        //   console.warn(res[0])
-        // })
-        // .catch(err => {
-        //   console.warn(err)
-        // })
-  
-        this.$http.post('http://jsonplaceholder.typicode.com/posts', {
-          userId: 10,
-          title: 'This is a good one',
-          body: '300px'
-        }, {
-          transformRequest: [
-            data => {
-              let requestBodyNew = ''
-              for (let i in data) {
-                requestBodyNew += i + '=' + data[i] + '&'
-              }
-              return requestBodyNew
-            }
-          ]
+        HomeServices.getPostComments({
+          userId: 2,
+          title: 'Good Answer',
+          body: 'good one'
         })
         .then(res => {
           // self.comment = Object.assign({}, self.comment, res[0])
-          self.comment = { ...res.data }
-          console.warn(res)
+          self.comment = { ...res }
+          console.warn(res[0])
         })
+        .catch(err => {
+          console.warn(err)
+        })
+  
+        // this.$http.post('http://jsonplaceholder.typicode.com/posts', {
+        //   userId: 10,
+        //   title: 'This is a good one',
+        //   body: '300px'
+        // }, {
+        //   transformRequest: [
+        //     data => {
+        //       let requestBodyNew = ''
+        //       for (let i in data) {
+        //         requestBodyNew += i + '=' + data[i] + '&'
+        //       }
+        //       return requestBodyNew
+        //     }
+        //   ]
+        // })
+        // .then(res => {
+        //   // self.comment = Object.assign({}, self.comment, res[0])
+        //   self.comment = { ...res.data }
+        //   console.warn(res)
+        // })
       }
     },
     components: {

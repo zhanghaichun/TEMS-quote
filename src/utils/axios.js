@@ -6,11 +6,11 @@ Axios.defaults.baseURL = 'https://www.yueke51.com'
 // TODO 设置超时时间
 Axios.defaults.timeout = 20000
 
-// Axios.defaults.headers = {
-//   'Access-Control-Allow-Origin': '*',
-//  // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-//   'Content-Type': 'application/json;charset=UTF-8'
-// }
+Axios.defaults.headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  'Accept': 'application/json, text/plain, */*'
+}
 
 // TODO http code 校验
 Axios.defaults.validateStatus = function (status) {
@@ -23,18 +23,17 @@ Axios.defaults.validateStatus = function (status) {
 } */
 
 // TODO 设置POST等请求 body 序列化
-/* Axios.defaults.transformRequest = [function (body) {
-  let data = body || {}
+Axios.defaults.transformRequest = [function (data) {
   let requestBody = ''
-  if (body instanceof window.FormData) {
-    return body
-  } else {
+  if (data instanceof Object) {
     for (let i in data) {
       requestBody += i + '=' + data[i] + '&'
     }
+  } else if (data instanceof String) {
+    return data
   }
   return requestBody
-}] */
+}]
 
 // TODO 设置统一请求拦截
 /* Axios.interceptors.response.use(response => {
@@ -75,17 +74,7 @@ function get (url, params) {
 function post (url, body) {
   // let requestBody = qs.stringify(body)
   return new Promise((resolve, reject) => {
-    Axios.post(url, body, {
-      transformRequest: [
-        data => {
-          let postRequestBody = ''
-          for (let i in data) {
-            postRequestBody += i + '=' + data[i] + '&'
-          }
-          return postRequestBody
-        }
-      ]
-    })
+    Axios.post(url, body)
       .then(response => {
         resolve(response)
       })
