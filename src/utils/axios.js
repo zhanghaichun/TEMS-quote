@@ -1,16 +1,16 @@
 import Axios from 'axios'
-import qs from 'qs'
+// import qs from 'qs'
 // Axios.defaults.baseURL = 'http://192.168.0.6:8080'
 // Axios.defaults.baseURL = 'http://localhost:8080'
 Axios.defaults.baseURL = 'https://www.yueke51.com'
 // TODO 设置超时时间
 Axios.defaults.timeout = 20000
 
-Axios.defaults.headers = {
-  'Access-Control-Allow-Origin': '*',
- // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-  'Content-Type': 'application/json;charset=UTF-8'
-}
+// Axios.defaults.headers = {
+//   'Access-Control-Allow-Origin': '*',
+//  // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+//   'Content-Type': 'application/json;charset=UTF-8'
+// }
 
 // TODO http code 校验
 Axios.defaults.validateStatus = function (status) {
@@ -18,21 +18,26 @@ Axios.defaults.validateStatus = function (status) {
 }
 
 // TODO GET 请求 params 序列化
-Axios.defaults.paramsSerializer = function (params) {
+/* Axios.defaults.paramsSerializer = function (params) {
   return qs.stringify(params)
-}
+} */
 
 // TODO 设置POST等请求 body 序列化
-Axios.defaults.transformRequest = [function (body) {
+/* Axios.defaults.transformRequest = [function (body) {
   let data = body || {}
+  let requestBody = ''
   if (body instanceof window.FormData) {
     return body
+  } else {
+    for (let i in data) {
+      requestBody += i + '=' + data[i] + '&'
+    }
   }
-  return JSON.stringify(data)
-}]
+  return requestBody
+}] */
 
 // TODO 设置统一请求拦截
-Axios.interceptors.response.use(response => {
+/* Axios.interceptors.response.use(response => {
   if (response.status === 200) {
     return Promise.resolve(response.data)
   }
@@ -43,7 +48,7 @@ Axios.interceptors.response.use(response => {
   return Promise.reject(response.data)
 }, error => {
   return Promise.reject(error)
-})
+}) */
 
 /**
  * @description 统一 GET 请求
@@ -68,8 +73,19 @@ function get (url, params) {
  * @param body --> POST 请求 data
  */
 function post (url, body) {
+  // let requestBody = qs.stringify(body)
   return new Promise((resolve, reject) => {
-    Axios.post(url, body)
+    Axios.post(url, body, {
+      transformRequest: [
+        data => {
+          let postRequestBody = ''
+          for (let i in data) {
+            postRequestBody += i + '=' + data[i] + '&'
+          }
+          return postRequestBody
+        }
+      ]
+    })
       .then(response => {
         resolve(response)
       })

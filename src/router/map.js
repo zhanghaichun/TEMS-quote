@@ -5,7 +5,7 @@
  *
  */
 import name from './name'
-import home from '../views/home/app'
+import home from '../views/home/home'
 
 export default [
   {

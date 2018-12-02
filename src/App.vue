@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import FTabbar from 'components/tabbar/tabbar'
+import FTabbar from './components/tabbar/tabbar'
 export default {
   name: 'app',
   data () {
@@ -58,6 +58,7 @@ html {
     #app {
       height: 100%;
       -webkit-tap-highlight-color: rgba(0,0,0,0);
+      /*padding-top: 61px;*/
     }
   }
   ::-webkit-scrollbar {

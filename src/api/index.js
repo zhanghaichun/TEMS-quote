@@ -4,8 +4,8 @@
  * Time: 22:57
  *
  */
-import * as comment from './list/comment'
+import * as common from './list/common'
 
 export default {
-  ...comment
+  ...common
 }

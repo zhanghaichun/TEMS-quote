@@ -1,10 +1,23 @@
 <div class="root">
-    <div>
-      <ul>
-      <li v-for="(c, index) in categoryList">
-        {{ c.name }}
-      </li>
-      </ul>
-    </div>
-  <FTabbar :tabbarIndex="tabbarIndex"></FTabbar>
+  <nav-menu :active-index="activeIndex"></nav-menu>
+  <p class="test-list">
+    <el-row>
+      <el-col :span="6">
+        <el-button @click="getData">获取数据</el-button>
+      </el-col>
+      <el-col :span="6">
+        <div class="test-list">
+          <ul>
+            <li v-for="(value, key) in comment">
+              {{ key }} : {{ value }}
+            </li>
+          </ul>
+        </div>
+      </el-col>
+    </el-row>
+  </p>
+  
+  
+  
+  
 </div>
