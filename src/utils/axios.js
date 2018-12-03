@@ -36,8 +36,11 @@ Axios.defaults.transformRequest = [function (data) {
 }]
 
 // TODO 设置统一请求拦截
-/* Axios.interceptors.response.use(response => {
-  if (response.status === 200) {
+Axios.interceptors.response.use(response => {
+  // 当返回的状态码是 2 开头的就代表着
+  // 已经成功返回数据了。
+  const successStatusRegexp = new RegExp('^2.*$')
+  if (successStatusRegexp.test(response.status.toString())) {
     return Promise.resolve(response.data)
   }
 
@@ -47,7 +50,7 @@ Axios.defaults.transformRequest = [function (data) {
   return Promise.reject(response.data)
 }, error => {
   return Promise.reject(error)
-}) */
+})
 
 /**
  * @description 统一 GET 请求

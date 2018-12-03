@@ -5,7 +5,7 @@
 <script type="text/ecmascript-6">
   
   import FTabbar from 'components/tabbar/tabbar'
-  import HomeServices from '../../api/viewServices/Home/home'
+  import HomeServices from '../../../api/viewServices/Home/home'
   import NavMenu from 'components/navMenu/navMenu'
 
   export default {
@@ -38,31 +38,17 @@
         .then(res => {
           // self.comment = Object.assign({}, self.comment, res[0])
           self.comment = { ...res }
-          console.warn(res[0])
         })
         .catch(err => {
           console.warn(err)
         })
-  
-        // this.$http.post('http://jsonplaceholder.typicode.com/posts', {
-        //   userId: 10,
-        //   title: 'This is a good one',
-        //   body: '300px'
-        // }, {
-        //   transformRequest: [
-        //     data => {
-        //       let requestBodyNew = ''
-        //       for (let i in data) {
-        //         requestBodyNew += i + '=' + data[i] + '&'
-        //       }
-        //       return requestBodyNew
-        //     }
-        //   ]
-        // })
+        // HomeServices.getPostComments('userId=2&title=good answer&body=good one')
         // .then(res => {
         //   // self.comment = Object.assign({}, self.comment, res[0])
         //   self.comment = { ...res.data }
-        //   console.warn(res)
+        // })
+        // .catch(err => {
+        //   console.warn(err)
         // })
       }
     },
