@@ -1,7 +1,7 @@
 {
-  "name": "saninco-framework",
+  "name": "TEMS-quote",
   "version": "1.0.0",
-  "description": "Saninco framework",
+  "description": "TEMS-quote",
   "author": "huibin.guan <‘851374040@qq.com>",
   "private": true,
   "scripts": {
@@ -62,10 +62,6 @@
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
-    "postcss": "^6.0.13",
-    "postcss-loader": "^2.0.8",
-    "postcss-px2rem": "^0.3.0",
-    "px2rem-loader": "^0.1.7",
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
