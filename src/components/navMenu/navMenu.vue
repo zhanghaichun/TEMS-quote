@@ -32,13 +32,9 @@
 
   
   .el-menu-demo {
-    position: fixed;
     display: flex;
-    top: 0;
-    width: 100%;
     margin-top: 0;
     padding: 0;
-    /*justify-content: center;*/
   
     .el-menu-item {
       flex: 1;

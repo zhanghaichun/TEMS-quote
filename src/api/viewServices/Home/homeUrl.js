@@ -1,8 +1,16 @@
+/**
+ * @desc Home 主页中用到的资源定位符
+ * @module homeUrl
+ */
 export default {
-  /* Teachers related */
-  TEACHER_CATEGORYS: '/studentApi/teacher.do?method=obtainTeacherCategory',
-  /* 从 json placeholder 中获取数据 */
+  /**
+   * @desc 请求 comments 数据的 URL 地址
+   * @const
+   */
   JSONPLACEHOLDER_COMMENTS: 'http://jsonplaceholder.typicode.com/posts/1/comments',
-  /* Post 请求数据 */
+  /**
+   * @desc 请求 posts 数据的 URL 地址
+   * @const
+   */
   POST_DATA: 'https://jsonplaceholder.typicode.com/posts'
 }

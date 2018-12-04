@@ -8,26 +8,16 @@ import HomeUrl from './homeUrl'
  */
 export default {
   /**
-   * @description 获取分类列表
+   * @desc 从 json placeholder 中获取 comments 列表。
    * @returns {Promise<AxiosResponse<any> | never>}
    */
-  obtainCategory () {
-    // const url = '/studentApi/teacher.do?method=obtainTeacherCategory'
-    return axios.post(HomeUrl.TEACHER_CATEGORYS).then((res) => {
-      return Promise.resolve(res)
-    })
-  },
-  /**
-   * @description 从 json placeholder 中获取 comments 列表。
-   * @returns {Promise<AxiosResponse<any> | never>}
-   */
-  getComments () {
+  getJSONPlaceholderComments () {
     return axios.get(HomeUrl.JSONPLACEHOLDER_COMMENTS).then((res) => {
       return Promise.resolve(res)
     })
   },
   /**
-   * @description 使用 post 方式从 json placeholder 中获取 comments 列表。
+   * @desc 使用 post 方式从 json placeholder 中获取 comments 列表。
    * @returns {Promise<AxiosResponse<any> | never>}
    */
   getPostComments (ops) {

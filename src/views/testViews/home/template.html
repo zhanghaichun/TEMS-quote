@@ -1,21 +1,28 @@
 <div class="root">
-  <nav-menu :active-index="activeIndex"></nav-menu>
-  <p class="test-list">
-    <el-row>
-      <el-col :span="6">
-        <el-button @click="getData">获取数据</el-button>
-      </el-col>
-      <el-col :span="6">
-        <div>
-          <ul>
-            <li v-for="(value, key) in comment">
-              {{ key }} : {{ value }}
-            </li>
-          </ul>
-        </div>
-      </el-col>
-    </el-row>
-  </p>
+ 
+  <header>
+    <nav-menu :active-index="activeIndex"></nav-menu>
+  </header>
+  <main>
+    <el-dropdown trigger="click">
+      <span class="el-dropdown-link">
+        Comments list <i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item
+          v-for="item in commentsList"
+          :key="item.id"
+          :disabled="item.id === 4"
+          :divided="item.id === 5">{{item.name}}</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    
+    <el-button
+      size="medium"
+      type="primary"
+      @click="_testAxiosPlugin()">Get Content</el-button>
+    <pre>{{testJSONPlaceholderContent}}</pre>
+  </main>
   
   
   

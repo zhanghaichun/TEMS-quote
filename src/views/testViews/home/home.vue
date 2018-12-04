@@ -4,7 +4,6 @@
 
 <script type="text/ecmascript-6">
   
-  import FTabbar from 'components/tabbar/tabbar'
   import HomeServices from '../../../api/viewServices/Home/home'
   import NavMenu from 'components/navMenu/navMenu'
 
@@ -17,70 +16,72 @@
     data () {
       return {
         tabbarIndex: 0,
-        categoryList: ['Apple', 'Orange', 'Banana'],
-        testArray: [1, 2, 3, 4],
-        activeIndex: '3',
-        comment: {id: 1, text: 'this'}
+        commentsList: [],
+        activeIndex: '1',
+        testJSONPlaceholderContent: {name: 'jsonPlaceholder'}
       }
     },
+    /**
+     * @desc created 钩子函数，
+     * 获取 comments 列表
+     * */
     created () {
-      this._obtainCategory()
+      this._obtainCommentsList()
     },
     methods: {
       /**
-       * @description 获取教学项目分类的方法
-       * @method
+       * @desc 获取 comments 列表
+       * @private
        */
-      _obtainCategory () {
+      _obtainCommentsList () {
         let self = this
-        HomeServices.obtainCategory().then((res) => {
-          self.categoryList = res
+        HomeServices.getJSONPlaceholderComments().then((res) => {
+          // 请求成功
+          self.commentsList = res
         })
       },
-      getData () {
+      /**
+       * @desc 第一个并发请求
+       * @function _concurrentRequestOne
+       * @private
+       * */
+      _concurrentRequestOne () {
+        return this.$http.get('https://jsonplaceholder.typicode.com/todos/1')
+      },
+      /**
+       * @desc 第二个并发请求
+       * @function _concurrentRequestOne
+       * @private
+       * */
+      _concurrentRequestTwo () {
+        return this.$http.get('https://jsonplaceholder.typicode.com/todos/2')
+      },
+      /**
+       * @desc 测试 axios
+       * @function testAxiosPlugin
+       * @private
+       */
+      _testAxiosPlugin () {
         let self = this
-        HomeServices.getPostComments({
-          userId: 2,
-          title: 'Good Answer',
-          body: 'good one'
-        })
-        .then(res => {
-          // self.comment = Object.assign({}, self.comment, res[0])
-          self.comment = { ...res }
-        })
+        this.$http.all([this._concurrentRequestOne(), this._concurrentRequestTwo()])
+        .then(this.$http.spread((requestOneRes, requestTwoRes) => {
+          let objArray = []
+          objArray.push(requestOneRes, requestTwoRes)
+          // 请求成功
+          self.testJSONPlaceholderContent = objArray
+        }))
         .catch(err => {
-          console.warn(err)
+          console.warn('请求失败: ' + err)
         })
-        // HomeServices.getPostComments('userId=2&title=good answer&body=good one')
-        // .then(res => {
-        //   // self.comment = Object.assign({}, self.comment, res[0])
-        //   self.comment = { ...res.data }
-        // })
-        // .catch(err => {
-        //   console.warn(err)
-        // })
+        .then(() => {
+        })
       }
     },
     components: {
-      FTabbar,
       NavMenu
     },
     mounted () {
 
-    },
-    computed: {
-      header () {
-        return this.$refs.header
-      },
-      videoSwiper () {
-        return this.$refs.videoSwiper
-      },
-      teachermedal () {
-        return this.$refs.teacherMedal.swiper
-      },
-      medal () {
-        return this.$refs.medal
-      }
     }
   }
 </script>
