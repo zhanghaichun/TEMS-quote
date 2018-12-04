@@ -8,6 +8,11 @@
   import HomeServices from '../../../api/viewServices/Home/home'
   import NavMenu from 'components/navMenu/navMenu'
 
+  /**
+   * @description 这是个用来测试的 Home 组件，当 Vue router 指向根目录的时候
+   * router-link 指向该组件。
+   * @module test-home
+   */
   export default {
     data () {
       return {
@@ -22,6 +27,10 @@
       this._obtainCategory()
     },
     methods: {
+      /**
+       * @description 获取教学项目分类的方法
+       * @method
+       */
       _obtainCategory () {
         let self = this
         HomeServices.obtainCategory().then((res) => {

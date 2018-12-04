@@ -15,8 +15,15 @@
 </template>
 
 <script>
+  /**
+   * @description 顶部导航栏菜单
+   * @module navMenu
+   */
   export default {
     name: 'navMenu',
+    /** 选中当前的 menu 菜单项
+     * @property: {String} activeIndex
+     */
     props: ['activeIndex']
   }
 </script>

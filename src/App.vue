@@ -6,6 +6,7 @@
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <!-- 这个是移动端的导航栏，在这里是用不到的 -->
     <FTabbar :tabbarIndex="tabbarIndex" v-if="showTab"></FTabbar>
   </div>
 
@@ -13,6 +14,11 @@
 
 <script>
 import FTabbar from './components/tabbar/tabbar'
+
+/**
+ * @description 这个是用来服务根组件的
+ * @module rootVue
+ */
 export default {
   name: 'app',
   data () {
@@ -36,6 +42,15 @@ export default {
         from.meta.keepAlive = false
         this.showTab = false
       }
+    }
+  },
+  methods: {
+    /**
+     * @description 这个是打印内容的方法
+     * @method testLog
+     */
+    testLog () {
+      console.warn('打印的内容')
     }
   },
   components: {
