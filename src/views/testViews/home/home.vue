@@ -6,6 +6,7 @@
   
   import HomeServices from '../../../api/viewServices/Home/home'
   import NavMenu from 'components/navMenu/navMenu'
+  // import fs from 'fs'
 
   /**
    * @description 这是个用来测试的 Home 组件，当 Vue router 指向根目录的时候
@@ -63,13 +64,12 @@
        */
       _testAxiosPlugin () {
         let self = this
-        this.$http.all([this._concurrentRequestOne(), this._concurrentRequestTwo()])
-        .then(this.$http.spread((requestOneRes, requestTwoRes) => {
-          let objArray = []
-          objArray.push(requestOneRes, requestTwoRes)
-          // 请求成功
-          self.testJSONPlaceholderContent = objArray
-        }))
+        // 传递配置对象, 对于这种方式，默认使用的是
+        // get 方法。
+        this.$http('https://jsonplaceholder.typicode.com/todos/2')
+        .then(res => {
+          self.testJSONPlaceholderContent = res
+        })
         .catch(err => {
           console.warn('请求失败: ' + err)
         })
