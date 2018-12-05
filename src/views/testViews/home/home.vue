@@ -64,17 +64,33 @@
        */
       _testAxiosPlugin () {
         let self = this
+        // 自己创建一个 axios 实例
+        const axiosInstance = this.$http.create({
+          baseURL: 'https://jsonplaceholder.typicode.com',
+          timeout: 20000,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Accept': 'application/json, text/plain, */*'
+          },
+          transformResponse: [data => {
+            let returnedData = Object.assign({}, JSON.parse(data), {
+              age: 30
+            })
+            console.warn(data)
+            return returnedData
+          }]
+        })
         // 传递配置对象, 对于这种方式，默认使用的是
         // get 方法。
-        this.$http('https://jsonplaceholder.typicode.com/todos/2')
+        axiosInstance.get('/todos/2')
         .then(res => {
-          self.testJSONPlaceholderContent = res
+          self.testJSONPlaceholderContent = res.data
         })
         .catch(err => {
           console.warn('请求失败: ' + err)
         })
-        .then(() => {
-        })
+        .then(() => {})
       }
     },
     components: {
