@@ -90,16 +90,25 @@
             return returnedData
           }]
         })
+        // 设置请求拦截器, 请求拦截器传入的参数是
+        // 请求时候的配置对象
+        // *** 响应拦截器传入的参数是返回的 response 数据
+        axiosInstance.interceptors.request.use((config) => {
+          return Object.assign({}, config, {
+            params: {
+              id: 2
+            }})
+        }, err => {
+          throw new Error('request failed: ' + err)
+        })
         // 传递配置对象, 对于这种方式，默认使用的是
         // get 方法。
-        axiosInstance.post('/todos', {
-          title: 'good answer'
-        })
+        axiosInstance.get('/todes')
         .then(res => {
           self.testJSONPlaceholderContent = res.data
         })
         .catch(err => {
-          console.warn('请求失败: ' + err)
+          throw new Error('request failed: ' + err)
         })
         .then(() => {})
       }

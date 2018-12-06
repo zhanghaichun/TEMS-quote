@@ -39,7 +39,9 @@ Axios.defaults.transformRequest = [function (data) {
   return requestBody
 }]
 
-// TODO 设置统一请求拦截
+/**
+ * @desc 设置响应拦截器， 直接返回 response.data
+ */
 Axios.interceptors.response.use(response => {
   // 当返回的状态码是 2 开头的就代表着
   // 已经成功返回数据了。
@@ -75,8 +77,8 @@ function get (url, params) {
 
 /**
  * @description 统一 POST 请求
- * @param url
- * @param body --> POST 请求 data
+ * @param {String} url 资源定位符
+ * @param {Object} <body> 请求体
  */
 function post (url, body) {
   // let requestBody = qs.stringify(body)
