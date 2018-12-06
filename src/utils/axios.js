@@ -2,7 +2,11 @@ import Axios from 'axios'
 // import qs from 'qs'
 // Axios.defaults.baseURL = 'http://192.168.0.6:8080'
 // Axios.defaults.baseURL = 'http://localhost:8080'
-Axios.defaults.baseURL = 'https://www.yueke51.com'
+// Axios.defaults.baseURL = 'https://www.yueke51.com'
+/**
+ * @desc 异步请求的全局性配置文件
+ * @module globalAxios
+ * */
 // TODO 设置超时时间
 Axios.defaults.timeout = 20000
 
@@ -54,8 +58,8 @@ Axios.interceptors.response.use(response => {
 
 /**
  * @description 统一 GET 请求
- * @param url
- * @param params --> GET 请求参数（***?name=walid&age=25）
+ * @param {String} [url] 请求的地址
+ * @param {Object} [params] 对象形态的 URLSearchParams 形态
  */
 function get (url, params) {
   return new Promise((resolve, reject) => {

@@ -16,12 +16,14 @@
           :divided="item.id === 5">{{item.name}}</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    
+    <!---->
     <el-button
       size="medium"
       type="primary"
       @click="_testAxiosPlugin()">Get Content</el-button>
     <pre>{{testJSONPlaceholderContent}}</pre>
+    
+    <el-button type="warning" size="medium" @click="_testAxiosPlugin">Say Hello World</el-button>
   </main>
   
   

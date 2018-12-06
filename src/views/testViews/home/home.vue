@@ -6,7 +6,7 @@
   
   import HomeServices from '../../../api/viewServices/Home/home'
   import NavMenu from 'components/navMenu/navMenu'
-  // import fs from 'fs'
+  import Qs from 'qs'
 
   /**
    * @description 这是个用来测试的 Home 组件，当 Vue router 指向根目录的时候
@@ -73,6 +73,15 @@
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             'Accept': 'application/json, text/plain, */*'
           },
+          transformRequest: [data => {
+            // let requestBodyString = ''
+            let qsRequestBodyString = Qs.stringify(data)
+            // console.warn(qsRequestBodyString)
+            // for (let key in data) {
+            //   requestBodyString += key + '=' + data[key] + '&'
+            // }
+            return qsRequestBodyString
+          }],
           transformResponse: [data => {
             let returnedData = Object.assign({}, JSON.parse(data), {
               age: 30
@@ -83,7 +92,9 @@
         })
         // 传递配置对象, 对于这种方式，默认使用的是
         // get 方法。
-        axiosInstance.get('/todos/2')
+        axiosInstance.post('/todos', {
+          title: 'good answer'
+        })
         .then(res => {
           self.testJSONPlaceholderContent = res.data
         })
