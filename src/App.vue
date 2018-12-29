@@ -1,19 +1,12 @@
-<style src="./assets/css/students.css"></style>
-<style src="./assets/css/cube.css"></style>
+<style src="./assets/css/common.css" lang="less"></style>
 <template>
   <div id="app">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"></router-view>
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
-    <!-- 这个是移动端的导航栏，在这里是用不到的 -->
-    <FTabbar :tabbarIndex="tabbarIndex" v-if="showTab"></FTabbar>
+    <router-view></router-view>
   </div>
 
 </template>
 
 <script>
-import FTabbar from './components/tabbar/tabbar'
 
 /**
  * @description 这个是用来服务根组件的
@@ -54,7 +47,6 @@ export default {
     }
   },
   components: {
-    FTabbar
   }
 }
 </script>

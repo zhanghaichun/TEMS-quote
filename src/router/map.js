@@ -5,16 +5,17 @@
  *
  */
 import name from './name'
-import home from '../views/testViews/home/home'
+// import home from '../views/testViews/home/home'
+import Login from '../views/login/login.vue'
 
 export default [
   {
     path: '/',
-    name: name.home,
+    name: name.login,
     meta: {
       title: '首页',
       keepAlive: false
     },
-    component: home
+    component: Login
   }
 ]

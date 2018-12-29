@@ -8,5 +8,6 @@
  * 路由名称
  */
 export default {
-  home: 'home'
+  home: 'home',
+  login: 'login'
 }
